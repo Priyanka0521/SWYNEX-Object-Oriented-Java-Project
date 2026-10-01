@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Student - Student Management System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Admin Panel</h2>
+                <p>Student Management</p>
+            </div>
+            <nav class="sidebar-nav">
+                <a th:href="@{/admin/dashboard}" class="nav-link">
+                    <span>Dashboard</span>
+                </a>
+                <a th:href="@{/admin/student/add}" class="nav-link">
+                    <span>Add Student</span>
+                </a>
+                <a th:href="@{/logout}" class="nav-link logout">
+                    <span>Logout</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="top-header">
+                <div class="header-title">
+                    <h1>View Student Details</h1>
+                    <p>Student information and marks</p>
+                </div>
+                <div class="header-actions">
+                    <a th:href="@{/admin/dashboard}" class="btn btn-secondary">Back to Dashboard</a>
+                    <a th:href="@{/logout}" class="btn btn-secondary">Logout</a>
+                </div>
+            </header>
+
+            <!-- Student Details -->
+            <div class="content-card">
+                <div class="card-header">
+                    <h2>Student Information</h2>
+                    <div class="card-actions">
+                        <a th:href="@{/admin/student/edit/{id}(id=${student.id})}" class="btn btn-warning">Edit</a>
+                    </div>
+                </div>
+
+                <div class="student-details-grid">
+                    <div class="detail-item">
+                        <label>Student ID:</label>
+                        <span th:text="${student.studentId}"></span>
+                    </div>
+                    <div class="detail-item">
+                        <label>Name:</label>
+                        <span th:text="${student.name}"></span>
+                    </div>
+                    <div class="detail-item">
+                        <label>Email:</label>
+                        <span th:text="${student.email}"></span>
+                    </div>
+                    <div class="detail-item">
+                        <label>Username:</label>
+                        <span th:text="${student.username}"></span>
+                    </div>
+                    <div class="detail-item">
+                        <label>Course:</label>
+                        <span th:text="${student.course}"></span>
+                    </div>
+                    <div class="detail-item">
+                        <label>Year:</label>
+                        <span th:text="${student.year}"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Marks Details -->
+            <div class="content-card">
+                <div class="card-header">
+                    <h2>Marks Information</h2>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Marks</th>
+                                <th>Grade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Java</td>
+                                <td th:text="${student.marks.javaMarks}"></td>
+                                <td th:text="${student.marks.getSubjectGrade(student.marks.javaMarks)}"></td>
+                            </tr>
+                            <tr>
+                                <td>Python</td>
+                                <td th:text="${student.marks.pythonMarks}"></td>
+                                <td th:text="${student.marks.getSubjectGrade(student.marks.pythonMarks)}"></td>
+                            </tr>
+                            <tr>
+                                <td>Database</td>
+                                <td th:text="${student.marks.databaseMarks}"></td>
+                                <td th:text="${student.marks.getSubjectGrade(student.marks.databaseMarks)}"></td>
+                            </tr>
+                            <tr>
+                                <td>Web Development</td>
+                                <td th:text="${student.marks.webDevMarks}"></td>
+                                <td th:text="${student.marks.getSubjectGrade(student.marks.webDevMarks)}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="marks-summary">
+                    <div class="summary-item">
+                        <label>Total Marks:</label>
+                        <span th:text="${student.marks.totalMarks} + ' / 400'"></span>
+                    </div>
+                    <div class="summary-item">
+                        <label>Percentage:</label>
+                        <span th:text="${#numbers.formatDecimal(student.marks.percentage, 1, 2)} + '%'"></span>
+                    </div>
+                    <div class="summary-item">
+                        <label>Overall Grade:</label>
+                        <span class="grade-badge" th:text="${student.marks.grade}"></span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

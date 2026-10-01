@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Student - Student Management System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Admin Panel</h2>
+                <p>Student Management</p>
+            </div>
+            <nav class="sidebar-nav">
+                <a th:href="@{/admin/dashboard}" class="nav-link">
+                    <span>Dashboard</span>
+                </a>
+                <a th:href="@{/admin/student/add}" class="nav-link active">
+                    <span>Add Student</span>
+                </a>
+                <a th:href="@{/logout}" class="nav-link logout">
+                    <span>Logout</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="top-header">
+                <div class="header-title">
+                    <h1>Add New Student</h1>
+                    <p>Fill in the student details below</p>
+                </div>
+                <div class="header-actions">
+                    <a th:href="@{/admin/dashboard}" class="btn btn-secondary">Back to Dashboard</a>
+                    <a th:href="@{/logout}" class="btn btn-secondary">Logout</a>
+                </div>
+            </header>
+
+            <!-- Alerts -->
+            <div class="alert alert-error" th:if="${error}" th:text="${error}"></div>
+
+            <!-- Add Student Form -->
+            <div class="content-card">
+                <div class="card-header">
+                    <h2>Student Information</h2>
+                </div>
+
+                <form th:action="@{/admin/student/add}" method="post" th:object="${student}" class="form-grid">
+                    <!-- Personal Information -->
+                    <h3 class="section-title">Personal Information</h3>
+                    
+                    <div class="form-group">
+                        <label for="studentId">Student ID *</label>
+                        <input type="text" id="studentId" th:field="*{studentId}" class="form-control" required>
+                        <p class="error-message" th:if="${#fields.hasErrors('studentId')}" th:errors="*{studentId}"></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <input type="text" id="name" th:field="*{name}" class="form-control" required>
+                        <p class="error-message" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" th:field="*{email}" class="form-control" required>
+                        <p class="error-message" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="course">Course *</label>
+                        <input type="text" id="course" th:field="*{course}" class="form-control" required>
+                        <p class="error-message" th:if="${#fields.hasErrors('course')}" th:errors="*{course}"></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="year">Year *</label>
+                        <select id="year" th:field="*{year}" class="form-control" required>
+                            <option value="">Select Year</option>
+                            <option value="1">1st Year</option>
+                            <option value="2">2nd Year</option>
+                            <option value="3">3rd Year</option>
+                            <option value="4">4th Year</option>
+                        </select>
+                        <p class="error-message" th:if="${#fields.hasErrors('year')}" th:errors="*{year}"></p>
+                    </div>
+
+                    <!-- Login Credentials -->
+                    <h3 class="section-title">Login Credentials</h3>
+
+                    <div class="form-group">
+                        <label for="username">Username *</label>
+                        <input type="text" id="username" th:field="*{username}" class="form-control" required>
+                        <p class="error-message" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password *</label>
+                        <input type="password" id="password" th:field="*{password}" class="form-control" required>
+                        <p class="error-message" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+                    </div>
+
+                    <!-- Marks Information -->
+                    <h3 class="section-title">Marks Information</h3>
+
+                    <div class="form-group">
+                        <label for="marks.javaMarks">Java Marks (0-100) *</label>
+                        <input type="number" id="marks.javaMarks" th:field="*{marks.javaMarks}" 
+                               class="form-control" min="0" max="100" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="marks.pythonMarks">Python Marks (0-100) *</label>
+                        <input type="number" id="marks.pythonMarks" th:field="*{marks.pythonMarks}" 
+                               class="form-control" min="0" max="100" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="marks.databaseMarks">Database Marks (0-100) *</label>
+                        <input type="number" id="marks.databaseMarks" th:field="*{marks.databaseMarks}" 
+                               class="form-control" min="0" max="100" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="marks.webDevMarks">Web Development Marks (0-100) *</label>
+                        <input type="number" id="marks.webDevMarks" th:field="*{marks.webDevMarks}" 
+                               class="form-control" min="0" max="100" required>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Add Student</button>
+                        <a th:href="@{/admin/dashboard}" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

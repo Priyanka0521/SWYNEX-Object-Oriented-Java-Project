@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - Student Management System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Student Portal</h2>
+                <p>My Dashboard</p>
+            </div>
+            <nav class="sidebar-nav">
+                <a th:href="@{/student/dashboard}" class="nav-link active">
+                    <span>Dashboard</span>
+                </a>
+                <a th:href="@{/logout}" class="nav-link logout">
+                    <span>Logout</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="top-header">
+                <div class="header-title">
+                    <h1>Welcome, <span th:text="${student.name}"></span>!</h1>
+                    <p>View your academic performance</p>
+                </div>
+                <div class="header-actions">
+                    <a th:href="@{/logout}" class="btn btn-secondary">Logout</a>
+                </div>
+            </header>
+
+            <!-- Student Information Card -->
+            <div class="content-card">
+                <div class="card-header">
+                    <h2>Student Information</h2>
+                </div>
+
+                <div class="student-details-grid">
+                    <div class="detail-item">
+                        <label>Student ID:</label>
+                        <span th:text="${student.studentId}"></span>
+                    </div>
+                    <div class="detail-item">
+                        <label>Name:</label>
+                        <span th:text="${student.name}"></span>
+                    </div>
+                    <div class="detail-item">
+                        <label>Email:</label>
+                        <span th:text="${student.email}"></span>
+                    </div>
+                    <div class="detail-item">
+                        <label>Course:</label>
+                        <span th:text="${student.course}"></span>
+                    </div>
+                    <div class="detail-item">
+                        <label>Year:</label>
+                        <span th:text="${student.year}"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Summary Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-blue">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3 th:text="${student.marks.totalMarks} + ' / 400'">0 / 400</h3>
+                        <p>Total Marks</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-green">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                            <polyline points="17 6 23 6 23 12"></polyline>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3 th:text="${#numbers.formatDecimal(student.marks.percentage, 1, 2)} + '%'">0%</h3>
+                        <p>Percentage</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-success">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3 class="grade-badge" th:text="${student.marks.grade}">A</h3>
+                        <p>Overall Grade</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Marks Table -->
+            <div class="content-card">
+                <div class="card-header">
+                    <h2>Subject-wise Marks</h2>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Marks Obtained</th>
+                                <th>Maximum Marks</th>
+                                <th>Grade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Java</td>
+                                <td th:text="${student.marks.javaMarks}"></td>
+                                <td>100</td>
+                                <td><span class="grade-badge" th:text="${student.marks.getSubjectGrade(student.marks.javaMarks)}"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Python</td>
+                                <td th:text="${student.marks.pythonMarks}"></td>
+                                <td>100</td>
+                                <td><span class="grade-badge" th:text="${student.marks.getSubjectGrade(student.marks.pythonMarks)}"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Database</td>
+                                <td th:text="${student.marks.databaseMarks}"></td>
+                                <td>100</td>
+                                <td><span class="grade-badge" th:text="${student.marks.getSubjectGrade(student.marks.databaseMarks)}"></span></td>
+                            </tr>
+                            <tr>
+                                <td>Web Development</td>
+                                <td th:text="${student.marks.webDevMarks}"></td>
+                                <td>100</td>
+                                <td><span class="grade-badge" th:text="${student.marks.getSubjectGrade(student.marks.webDevMarks)}"></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="marks-summary">
+                    <div class="summary-item">
+                        <label>Total Marks:</label>
+                        <span th:text="${student.marks.totalMarks} + ' / 400'"></span>
+                    </div>
+                    <div class="summary-item">
+                        <label>Percentage:</label>
+                        <span th:text="${#numbers.formatDecimal(student.marks.percentage, 1, 2)} + '%'"></span>
+                    </div>
+                    <div class="summary-item">
+                        <label>Overall Grade:</label>
+                        <span class="grade-badge" th:text="${student.marks.grade}"></span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

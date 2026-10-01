@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Student Management System</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Admin Panel</h2>
+                <p>Student Management</p>
+            </div>
+            <nav class="sidebar-nav">
+                <a th:href="@{/admin/dashboard}" class="nav-link active">
+                    <span>Dashboard</span>
+                </a>
+                <a th:href="@{/admin/student/add}" class="nav-link">
+                    <span>Add Student</span>
+                </a>
+                <a th:href="@{/logout}" class="nav-link logout">
+                    <span>Logout</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="top-header">
+                <div class="header-title">
+                    <h1>Admin Dashboard</h1>
+                    <p>Welcome, Administrator</p>
+                </div>
+                <div class="header-actions">
+                    <a th:href="@{/logout}" class="btn btn-secondary">Logout</a>
+                </div>
+            </header>
+
+            <!-- Alerts -->
+            <div class="alert alert-success" th:if="${success}" th:text="${success}"></div>
+            <div class="alert alert-error" th:if="${error}" th:text="${error}"></div>
+
+            <!-- Statistics Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-blue">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3 th:text="${totalStudents}">0</h3>
+                        <p>Total Students</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-green">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                            <polyline points="17 6 23 6 23 12"></polyline>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3 th:text="${averagePercentage + '%'}">0%</h3>
+                        <p>Average Percentage</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-success">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3 th:text="${passedStudents}">0</h3>
+                        <p>Passed Students</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon stat-icon-danger">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="15" y1="9" x2="9" y2="15"></line>
+                            <line x1="9" y1="9" x2="15" y2="15"></line>
+                        </svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3 th:text="${failedStudents}">0</h3>
+                        <p>Failed Students</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Student List Section -->
+            <div class="content-card">
+                <div class="card-header">
+                    <h2>Student List</h2>
+                    <div class="card-actions">
+                        <a th:href="@{/admin/student/add}" class="btn btn-primary">Add Student</a>
+                    </div>
+                </div>
+
+                <!-- Search Form -->
+                <div class="search-bar">
+                    <form th:action="@{/admin/student/search}" method="get" class="search-form">
+                        <select name="searchType" class="form-control">
+                            <option value="name">Search by Name</option>
+                            <option value="course">Search by Course</option>
+                        </select>
+                        <input type="text" name="query" placeholder="Search..." class="form-control" 
+                               th:value="${searchQuery}" required>
+                        <button type="submit" class="btn btn-secondary">Search</button>
+                        <a th:href="@{/admin/dashboard}" class="btn btn-secondary">Clear</a>
+                    </form>
+                </div>
+
+                <!-- Student Table -->
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Student ID</th>
+                                <th>Name</th>
+                                <th>Course</th>
+                                <th>Username</th>
+                                <th>Year</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:if="${students.isEmpty()}">
+                                <td colspan="6" class="text-center">No students found</td>
+                            </tr>
+                            <tr th:each="student : ${students}">
+                                <td th:text="${student.studentId}"></td>
+                                <td th:text="${student.name}"></td>
+                                <td th:text="${student.course}"></td>
+                                <td th:text="${student.username}"></td>
+                                <td th:text="${student.year}"></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <a th:href="@{/admin/student/view/{id}(id=${student.id})}" 
+                                           class="btn btn-sm btn-info">View</a>
+                                        <a th:href="@{/admin/student/edit/{id}(id=${student.id})}" 
+                                           class="btn btn-sm btn-warning">Edit</a>
+                                        <a th:href="@{/admin/student/delete/{id}(id=${student.id})}" 
+                                           class="btn btn-sm btn-danger" 
+                                           onclick="return confirm('Are you sure you want to delete this student?');">Delete</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
